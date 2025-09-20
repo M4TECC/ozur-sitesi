@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Özür Sayfası</title>
+  <style>
+    body {
+      background: url("https://cdn.pixabay.com/photo/2017/11/09/21/41/cat-2934720_1280.jpg") no-repeat center center fixed;
+      background-size: cover;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+      color: #f1f1f1;
+      transition: background 1s ease-in-out;
+    }
+    .container {
+      background: rgba(42, 42, 42, 0.9);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.6);
+      max-width: 600px;
+      margin: auto;
+    }
+    h1 {
+      color: #ffcc00;
+    }
+    p {
+      font-size: 18px;
+      line-height: 1.6;
+    }
+    .buttons {
+      margin-top: 20px;
+    }
+    button {
+      background-color: #ffcc00;
+      border: none;
+      padding: 12px 25px;
+      margin: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #ffaa00;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    #close-warning {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #ffcc00;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Özür Mesajım</h1>
+    <p>
+      Bu Übey’le Buse arkadaşlar ama Buse, Übey’i biraz kıskanıyor.  
+      Biz de aynı durumu koyup Übey’le oyuna girdik, Buse’ye gıcıklık olsun diye.  
+      Başka bir derdim yok hocam, yanlış anlaşılma için özür dilerim.
+    </p>
+
+    <div class="buttons">
+      <p><strong>Özür kabul edildi mi?</strong></p>
+      <button onclick="accept()">Evet</button>
+      <button onclick="decline()">Hayır</button>
+    </div>
+
+    <div id="result"></div>
+    <div id="close-warning"></div>
+  </div>
+
+  <script>
+    const webhookUrl = "https://discord.com/api/webhooks/1418757494163112076/utGWXimZGxkDUzkE66qJL42J_PFINfHVR3MbSM6GHxVHHPMhGndiEFDjOK_dSGYbfUCr";
+
+    function sendToDiscord(message) {
+      fetch(webhookUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ content: message })
+      }).catch(err => console.error("Webhook hatası:", err));
+    }
+
+    function siteyiKapat() {
+      document.getElementById("close-warning").innerHTML = "⚠️ Site 5 saniye sonra kapanacak!";
+      setTimeout(() => {
+        window.close(); // bazı tarayıcılar izin vermeyebilir
+        window.location.href = "about:blank"; // alternatif çözüm
+      }, 5000);
+    }
+
+    function accept() {
+      document.getElementById("result").innerHTML = "✅ Özrün kabul edildi! Teşekkür ederim ❤️";
+      document.getElementById("result").style.color = "#00ff99";
+      document.body.style.background = 'url("https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif") no-repeat center center fixed';
+      document.body.style.backgroundSize = "cover";
+      sendToDiscord("✅ Bir kullanıcı **EVET** butonuna bastı!");
+      siteyiKapat();
+    }
+
+    function decline() {
+      document.getElementById("result").innerHTML = "❌ Özrün kabul edilmedi! Yine de zaman ayırdığın için teşekkürler 🙏";
+      document.getElementById("result").style.color = "#ff4444";
+      document.body.style.background = 'url("https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif") no-repeat center center fixed';
+      document.body.style.backgroundSize = "cover";
+      sendToDiscord("❌ Bir kullanıcı **HAYIR** butonuna bastı!");
+      siteyiKapat();
+    }
+  </script>
+</body>
+</html>
