@@ -2,6 +2,7 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Özür Sayfası</title>
   <style>
     body {
@@ -9,13 +10,13 @@
       background-size: cover;
       font-family: Arial, sans-serif;
       text-align: center;
-      padding: 50px;
+      padding: 30px;
       color: #f1f1f1;
       transition: background 1s ease-in-out;
     }
     .container {
       background: rgba(42, 42, 42, 0.9);
-      padding: 30px;
+      padding: 20px;
       border-radius: 15px;
       box-shadow: 0 0 15px rgba(0,0,0,0.6);
       max-width: 600px;
@@ -23,38 +24,73 @@
     }
     h1 {
       color: #ffcc00;
+      font-size: 1.8rem;
     }
     p {
-      font-size: 18px;
+      font-size: 1rem;
       line-height: 1.6;
     }
     .buttons {
       margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
     }
     button {
       background-color: #ffcc00;
       border: none;
       padding: 12px 25px;
-      margin: 10px;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 1rem;
       font-weight: bold;
       transition: 0.3s;
+      flex: 1 1 120px;
     }
     button:hover {
       background-color: #ffaa00;
     }
     #result {
       margin-top: 20px;
-      font-size: 20px;
+      font-size: 1.1rem;
       font-weight: bold;
     }
     #close-warning {
       margin-top: 20px;
-      font-size: 18px;
+      font-size: 1.2rem;
       color: #ffcc00;
       font-weight: bold;
+    }
+    /* Sayaç tasarımı */
+    #countdown {
+      font-size: 2rem;
+      margin-top: 10px;
+      color: #ffffff;
+      font-weight: bold;
+    }
+
+    /* 📱 Mobil uyum */
+    @media (max-width: 480px) {
+      body {
+        padding: 15px;
+      }
+      .container {
+        padding: 15px;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
+      p {
+        font-size: 0.95rem;
+      }
+      button {
+        font-size: 0.9rem;
+        padding: 10px 15px;
+      }
+      #countdown {
+        font-size: 1.5rem;
+      }
     }
   </style>
 </head>
@@ -68,13 +104,14 @@
     </p>
 
     <div class="buttons">
-      <p><strong>Özür kabul edildi mi?</strong></p>
+      <p style="flex: 1 1 100%;"><strong>Özür kabul edildi mi?</strong></p>
       <button onclick="accept()">Evet</button>
       <button onclick="decline()">Hayır</button>
     </div>
 
     <div id="result"></div>
     <div id="close-warning"></div>
+    <div id="countdown"></div>
   </div>
 
   <script>
@@ -91,11 +128,19 @@
     }
 
     function siteyiKapat() {
-      document.getElementById("close-warning").innerHTML = "⚠️ Site 5 saniye sonra kapanacak!";
-      setTimeout(() => {
-        window.close(); // bazı tarayıcılar izin vermeyebilir
-        window.location.href = "about:blank"; // alternatif çözüm
-      }, 5000);
+      let countdown = 5;
+      document.getElementById("close-warning").innerHTML = "⚠️ Site kapanıyor!";
+      document.getElementById("countdown").innerHTML = countdown;
+
+      const interval = setInterval(() => {
+        countdown--;
+        document.getElementById("countdown").innerHTML = countdown;
+        if (countdown <= 0) {
+          clearInterval(interval);
+          window.close(); // bazı tarayıcılar izin vermeyebilir
+          window.location.href = "about:blank"; // alternatif
+        }
+      }, 1000);
     }
 
     function accept() {
